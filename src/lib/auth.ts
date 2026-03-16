@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 
 // Create user profile after signup
-const createUserProfile = async (userId: string, email: string, fullName: string) => {
+const createUserProfile = async (userId: string, email: string, fullName: string, phone: string) => {
   const { error } = await supabase
     .from('users')
     .insert([
@@ -9,6 +9,7 @@ const createUserProfile = async (userId: string, email: string, fullName: string
         id: userId,
         email: email,
         full_name: fullName,
+        phone: phone,
       }
     ]);
   
@@ -18,20 +19,22 @@ const createUserProfile = async (userId: string, email: string, fullName: string
   }
 };
 
-export const signUp = async (email: string, password: string, fullName: string) => {
+export const signUp = async (email: string, password: string, fullName: string, phone: string) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    phone,
     options: {
       data: {
         full_name: fullName,
+        phone: phone,
       },
     },
   });
   
   // Create user profile if signup successful
   if (data.user && !error) {
-    await createUserProfile(data.user.id, email, fullName);
+    await createUserProfile(data.user.id, email, fullName, phone);
   }
   
   return { data, error };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Leaf, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Leaf, Mail, Lock, User, Phone } from 'lucide-react';
 import { signUp } from '../lib/auth';
 import toast from 'react-hot-toast';
 
@@ -9,6 +9,7 @@ const RegisterPage = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   });
@@ -34,7 +35,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const { error } = await signUp(formData.email, formData.password, formData.fullName);
+      const { error } = await signUp(formData.email, formData.password, formData.fullName, formData.phone);
       
       if (error) {
         toast.error(error.message);
@@ -113,6 +114,26 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   placeholder="your@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* phone Field */}
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                  placeholder="your phone number"
                   required
                 />
               </div>
